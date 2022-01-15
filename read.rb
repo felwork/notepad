@@ -22,7 +22,11 @@ OptionParser.new do |opt|
 
 end.parse!
 
-result = Post.find(options[:limit], options[:type], options[:id])
+result = if options[:id].nil?
+           Post.find_all(options[:limit], options[:type])
+         else
+           Post.find_by_id(options[:id])
+         end
 
 if result.is_a? Post # показываем конкретный пост
   puts "Запись #{result.class.name}, id = #{options[:id]}"
@@ -31,7 +35,8 @@ if result.is_a? Post # показываем конкретный пост
     puts line
   end
 
-else # показываем таблицу результатов
+else
+  # показываем таблицу результатов
 
   print "| id\t| @type\t|  @created_at\t\t\t|  @text \t\t\t| @url\t\t| @due_date \t "
 
