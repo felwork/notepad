@@ -28,4 +28,17 @@ class Memo < Post
       }
     )
   end
+
+  def to_strings
+    time_string = "Создано: #{@created_at.strftime('%Y.%m.%d, %H:%M:%S')}\n"
+
+    @text.unshift(time_string)
+  end
+
+  def load_data(data_hash)
+    super(data_hash) # сперва дергаем родительский метод для общих полей
+
+    # теперь прописываем свое специфичное поле
+    @text = data_hash['text'].split('\n\r')
+  end
 end
